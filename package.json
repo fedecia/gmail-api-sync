@@ -1,0 +1,36 @@
+{
+  "name": "gmail-api-sync",
+  "version": "0.0.1",
+  "description": "Sync, query and parse Gmail emails with Google REST API",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedecia/google-api-sync.git"
+  },
+  "keywords": [
+    "sync",
+    "gmail",
+    "api",
+    "gmail-api",
+    "query,"
+    "googleapi",
+    "parse",
+    "email",
+    "parts",
+    "body",
+    "html",
+    "mime",
+    "history",
+    "google-batch",
+  ],
+  "author": {
+    "name": "Federico Cia",
+    "email": "fedecia@gmail.com"
+  },
+  "licenses": "MIT",
+  "dependencies": {
+    "googleapis": "^17.1.0",
+    "gmail-api-parse-message": "^2.0.0",
+    "google-auth-library": "^0.10.0",
+    "google-batch": "https://github.com/locoturbine/google-batch/tarball/master",
+  }  
+}

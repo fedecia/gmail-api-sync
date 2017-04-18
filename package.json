@@ -11,7 +11,7 @@
     "gmail",
     "api",
     "gmail-api",
-    "query,"
+    "query",
     "googleapi",
     "parse",
     "email",
@@ -20,7 +20,7 @@
     "html",
     "mime",
     "history",
-    "google-batch",
+    "google-batch"
   ],
   "author": {
     "name": "Federico Cia",
@@ -31,6 +31,6 @@
     "googleapis": "^17.1.0",
     "gmail-api-parse-message": "^2.0.0",
     "google-auth-library": "^0.10.0",
-    "google-batch": "https://github.com/locoturbine/google-batch/tarball/master",
+    "google-batch": "https://github.com/locoturbine/google-batch/tarball/master"
   }  
 }

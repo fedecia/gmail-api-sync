@@ -1,6 +1,6 @@
 {
   "name": "gmail-api-sync",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Sync, query and parse Gmail emails with Google REST API",
   "repository": {
     "type": "git",

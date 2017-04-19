@@ -4,7 +4,7 @@
   "description": "Sync, query and parse Gmail emails with Google REST API",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fedecia/google-api-sync.git"
+    "url": "git+https://github.com/fedecia/gmail-api-sync.git"
   },
   "keywords": [
     "sync",

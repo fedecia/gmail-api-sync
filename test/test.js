@@ -12,6 +12,7 @@ var accessToken = {
     "expiry_date": 1492639284694
 }
 
+//Full Sync
 gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
     if (err) {
         console.log("Something went wrong: " + err);
@@ -26,6 +27,24 @@ gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
             console.log(JSON.stringify(response));
         });
     }
+});
+
+//Partial Sync
+var historyId = 13855;
+
+gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
+    if (err) {
+        console.log("Something went wrong: " + err);
+        return;
+    }
+    else {
+        gmailApiSync.syncMessages(oauth, historyId, function (err, response) {
+            if (!err) {
+                console.log(JSON.stringify(response));
+            }
+        });
+    }
+
 });
 
 //Using Server Auth, to get a new token run generate_server_auth.js and replace serverAuthCode the code from the visited URL.
@@ -45,6 +64,7 @@ gmailApiSync.authorizeWithServerAuth(serverAuthCode, function (err, oauth) {
             console.log(JSON.stringify(response));
         });
     }
+
 
 
 });

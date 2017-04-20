@@ -13,56 +13,99 @@ var accessToken = {
 }
 
 //Full Sync
-function fullSyncTest(query,callback) {
+function fullSyncTest(options, callback) {
     gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
         if (err) {
             console.log("Something went wrong: " + err);
-            return callback(err,null);
+            return callback(err, null);
         }
         else {
-            gmailApiSync.queryMessages(oauth, query, function (err, response) {
+            gmailApiSync.queryMessages(oauth, options, function (err, response) {
                 if (err) {
                     console.log("Something went wrong: " + err);
-                    return callback(err,null);
+                    return callback(err, null);
                 }
-                console.log(JSON.stringify(response));
-                callback(null,response);
+                //console.log(JSON.stringify(response));
+                callback(null, response);
             });
         }
     });
 }
 
 //Partial Sync
-function partialSync(historyId,callback) {
+function partialSync(options, callback) {
     //var historyId = 13855;
 
     gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
         if (err) {
             console.log("Something went wrong: " + err);
-            return callback(err,null);
+            return callback(err, null);
         }
         else {
-            gmailApiSync.syncMessages(oauth, historyId, function (err, response) {
+            gmailApiSync.syncMessages(oauth, options, function (err, response) {
                 if (!err) {
-                    console.log(JSON.stringify(response));
-                    callback(null,response);
-                } else{
-                    callback(err,null);
+                    // console.log(JSON.stringify(response));
+                    callback(null, response);
+                } else {
+                    callback(err, null);
                 }
             });
         }
     });
 }
 
-describe('FullSync', function() {
-    describe('#queryMessages()', function() {
-        it('should return no messages for .mil domain', function(done) {
-            var query = 'from:*.mil';
-            fullSyncTest(query, function (err,response) {
+describe('FullSync', function () {
+    describe('#queryMessages("from:*.mil")', function () {
+        it('should return no messages for .mil domain', function (done) {
+            var options = {query: 'from:*.mil'};
+            fullSyncTest(options, function (err, response) {
                 if (err) done(err);
                 else {
-                    assert.equal(0,response.emails.length);
+                    assert.equal(0, response.emails.length);
                     done();
+                }
+            });
+
+        });
+    });
+    describe('#queryMessages("subject:mocha-tests-are-fun-not!")', function () {
+        it('should return 1 message subject "mocha-tests-are-fun-not!"', function (done) {
+            var options = {query: 'subject:mocha-tests-are-fun-not!',
+            format : 'list'};
+            fullSyncTest(options, function (err, response) {
+                if (err) done(err);
+                else {
+                    assert.equal(1, response.emails.length);
+                    done();
+                }
+            });
+
+        });
+    });
+});
+describe('PartialSync', function () {
+    describe('#syncMessages(lastestHistoryId)', function () {
+        it('should return no messages new messages', function (done) {
+            this.timeout(3000);
+            var firstOptions = {
+                query: '',
+                format: 'list'
+            };
+            fullSyncTest(firstOptions, function (err, firstResponse) {
+                if (err) done(err);
+                else {
+                    var options = {
+                        historyId: firstResponse.historyId,
+                        format: 'list'
+                    };
+                    partialSync(options, function (err, response) {
+                        if (err) done(err);
+                        else {
+                            assert.equal(0, response.emails.length);
+                            done();
+                        }
+                    })
+
                 }
             });
 

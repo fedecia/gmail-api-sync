@@ -1,8 +1,8 @@
 var gmailApiSync = require('../index.js');
+var assert = require('assert');
 
 //Load Google Api Project client secret.
-gmailApiSync.setClientSecretsFile('./client_secret.json');
-
+gmailApiSync.setClientSecretsFile('test/client_secret.json');
 
 //Using AccessToken;
 var accessToken = {
@@ -13,58 +13,79 @@ var accessToken = {
 }
 
 //Full Sync
-gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
-    if (err) {
-        console.log("Something went wrong: " + err);
-        return;
-    }
-    else {
-        gmailApiSync.queryMessages(oauth, "from:*.org", function (err, response) {
-            if (err) {
-                console.log("Something went wrong: " + err);
-                return;
-            }
-            console.log(JSON.stringify(response));
-        });
-    }
-});
+function fullSyncTest(query,callback) {
+    gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
+        if (err) {
+            console.log("Something went wrong: " + err);
+            return callback(err,null);
+        }
+        else {
+            gmailApiSync.queryMessages(oauth, query, function (err, response) {
+                if (err) {
+                    console.log("Something went wrong: " + err);
+                    return callback(err,null);
+                }
+                console.log(JSON.stringify(response));
+                callback(null,response);
+            });
+        }
+    });
+}
 
 //Partial Sync
-var historyId = 13855;
+function partialSync(historyId,callback) {
+    //var historyId = 13855;
 
-gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
-    if (err) {
-        console.log("Something went wrong: " + err);
-        return;
-    }
-    else {
-        gmailApiSync.syncMessages(oauth, historyId, function (err, response) {
-            if (!err) {
-                console.log(JSON.stringify(response));
-            }
+    gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
+        if (err) {
+            console.log("Something went wrong: " + err);
+            return callback(err,null);
+        }
+        else {
+            gmailApiSync.syncMessages(oauth, historyId, function (err, response) {
+                if (!err) {
+                    console.log(JSON.stringify(response));
+                    callback(null,response);
+                } else{
+                    callback(err,null);
+                }
+            });
+        }
+    });
+}
+
+describe('FullSync', function() {
+    describe('#queryMessages()', function() {
+        it('should return no messages for .mil domain', function(done) {
+            var query = 'from:*.mil';
+            fullSyncTest(query, function (err,response) {
+                if (err) done(err);
+                else {
+                    assert.equal(0,response.emails.length);
+                    done();
+                }
+            });
+
         });
-    }
-
+    });
 });
+
 
 //Using Server Auth, to get a new token run generate_server_auth.js and replace serverAuthCode the code from the visited URL.
-var serverAuthCode = "4/-u9M18VcqVQya6Cj-M12TbSQE4PKmNN1g4XqUBXiUfY";
-
-gmailApiSync.authorizeWithServerAuth(serverAuthCode, function (err, oauth) {
-    if (err) {
-        console.log("Something went wrong: " + err);
-        return;
-    }
-    else {
-        gmailApiSync.queryMessages(oauth, "from:*.org", function (err, response) {
-            if (err) {
-                console.log("Something went wrong: " + err);
-                return;
-            }
-            console.log(JSON.stringify(response));
-        });
-    }
-
-
-
-});
+// var serverAuthCode = "4/-u9M18VcqVQya6Cj-M12TbSQE4PKmNN1g4XqUBXiUfY";
+//
+// gmailApiSync.authorizeWithServerAuth(serverAuthCode, function (err, oauth) {
+//     if (err) {
+//         console.log("Something went wrong: " + err);
+//         return;
+//     }
+//     else {
+//         gmailApiSync.queryMessages(oauth, "from:*.org", function (err, response) {
+//             if (err) {
+//                 console.log("Something went wrong: " + err);
+//                 return;
+//             }
+//             console.log(JSON.stringify(response));
+//         });
+//     }
+// });

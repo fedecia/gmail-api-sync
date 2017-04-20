@@ -1,3 +1,4 @@
+var debug = require('debug')('gmail-api-sync');
 var fs = require('fs');
 var google = require('googleapis');
 var gmailApiParser = require('gmail-api-parse-message');
@@ -10,7 +11,7 @@ var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 var credentials = null;
 var clientSecretPath;
 
-var setClientSecretsFile = function (path) {
+exports.setClientSecretsFile = function (path) {
     clientSecretPath = path;
 };
 
@@ -18,7 +19,7 @@ var setClientSecretsFile = function (path) {
 var loadClientSecrets = function (callback) {
     fs.readFile(clientSecretPath, function processClientSecrets(err, content) {
         if (err) {
-            console.log('Error loading client secret file: ' + err);
+            debug('Error loading client secret file: ' + err);
             return callback(err);
         } else {
             credentials = JSON.parse(content);
@@ -31,13 +32,13 @@ function checkCredentials(callback) {
     if (credentials === null) {
         loadClientSecrets(function (err) {
             if (err) {
-                console.error("Error loading credentials.");
+                debug('Error loading credentials.');
                 return callback(err);
             }
             else {
                 return callback();
             }
-        })
+        });
     } else {
         return callback();
     }
@@ -56,10 +57,10 @@ function createOauth2Client() {
  * execute the given callback with the authorized OAuth2 client.
  *
  */
-function getNewServerAuthCode() {
+exports.getNewServerAuthCode = function () {
     checkCredentials(function (err) {
         if (err) {
-            console.error("Unable to load credentials. Is Client secret set?");
+            debug('Unable to load credentials. Is Client secret set?');
             return;
         }
         var oauth2Client = createOauth2Client();
@@ -67,10 +68,10 @@ function getNewServerAuthCode() {
             access_type: 'offline',
             scope: SCOPES
         });
-        console.log('Authorize this app by visiting this url: ', authUrl);
+        debug('Authorize this app by visiting this url: ', authUrl);
 
     });
-}
+};
 
 
 /**
@@ -80,7 +81,7 @@ function getNewServerAuthCode() {
  * @param {Object} accessToken The token to create an Oauth2 object.
  * @param {function} callback The callback to call with the authorized client.
  */
-function authorizeWithToken(accessToken, callback) {
+exports.authorizeWithToken = function (accessToken, callback) {
     if (accessToken === null) {
         return callback(new Error('serverAuthCode cannot be null'), null);
     }
@@ -92,9 +93,9 @@ function authorizeWithToken(accessToken, callback) {
         oauth2Client.credentials = accessToken;
         callback(null, oauth2Client);
     });
-}
+};
 
-function getNewAccesToken(serverAuthCode, callback) {
+exports.getNewAccesToken = function (serverAuthCode, callback) {
     checkCredentials(function (err) {
         if (err) {
             return callback(err, null);
@@ -109,10 +110,10 @@ function getNewAccesToken(serverAuthCode, callback) {
         });
     });
 
-}
+};
 
-function authorizeWithServerAuth(serverAuthCode, callback) {
-    getNewAccesToken(serverAuthCode, function (err, token) {
+exports.authorizeWithServerAuth = function (serverAuthCode, callback) {
+    this.getNewAccesToken(serverAuthCode, function (err, token) {
         if (err) {
             return callback(new Error('Error while trying to retrieve access token. ' + err), null);
         } else {
@@ -121,7 +122,7 @@ function authorizeWithServerAuth(serverAuthCode, callback) {
             callback(null, oauth2Client);
         }
     });
-}
+};
 
 function partialSyncListMessagesInitial(auth, historyId, callback) {
     var gmail = google.gmail('v1');
@@ -161,14 +162,12 @@ function partialSyncListMessagesPage(auth, resp, messages, callback) {
             if (err) {
                 return callback(new Error('partialSyncListMessagesPage: The API returned an error: ' + err), null);
             } else {
-                if (response.history != null) {
-                }
                 partialSyncListMessagesPage(auth, response, messages, callback);
             }
         });
     } else {
-        console.log("New messages retrived: " + messages.length);
-        callback(null, messages)
+        debug('New messages retrived: ' + messages.length);
+        callback(null, messages);
     }
 
 }
@@ -183,13 +182,13 @@ function listMessagesInitial(auth, query, callback) {
             return callback(new Error('listMessagesInitial: The API returned an error: ' + err), null);
         }
         else {
-            callback(null, response)
+            callback(null, response);
         }
     });
 }
 function listMessagesPage(auth, query, resp, messages, callback) {
     if (resp.messages == null) {
-        console.log("No new messages found: ");
+        debug('No new messages found: ');
         return callback(null, messages);
     }
     messages = messages.concat(resp.messages);
@@ -206,14 +205,12 @@ function listMessagesPage(auth, query, resp, messages, callback) {
             if (err) {
                 return callback(new Error('listMessagesPage: The API returned an error: ' + err), null);
             } else {
-                if (response.messages != null) {
-                }
                 listMessagesPage(auth, query, response, messages, callback);
             }
         });
     } else {
-        console.log("New messages retrived: " + messages.length);
-        callback(null, messages)
+        debug('New messages retrived: ' + messages.length);
+        callback(null, messages);
     }
 
 }
@@ -229,7 +226,7 @@ function fullSyncListMessages(auth, query, callback) {
                 return callback(err, null);
             }
             callback(null, messages);
-        })
+        });
     });
 }
 
@@ -244,7 +241,7 @@ function partialSyncListMessages(auth, historyId, callback) {
                 return callback(err, null);
             }
             callback(null, messages);
-        })
+        });
     });
 }
 
@@ -258,8 +255,8 @@ var getHeader = function (headers, name) {
     return header;
 };
 
-function getMessages(auth, messageIds, callback) {
-    batch.setAuth(auth);
+exports.getMessages = function (oauth, messageIds, callback) {
+    batch.setAuth(oauth);
     var gmail = googleApiBatch.gmail({
         version: 'v1'
     });
@@ -267,7 +264,7 @@ function getMessages(auth, messageIds, callback) {
     messageIds.forEach(function (messageId) {
         var params = {
             googleBatch: true,
-            userId: "me",
+            userId: 'me',
             id: messageId.id
         };
         batch.add(gmail.users.messages.get(params));
@@ -301,15 +298,15 @@ function getMessages(auth, messageIds, callback) {
                 };
                 messages.push(message);
             } else {
-                //console.log("Skipping message with no body:" + JSON.stringify(response.body));
+                //debug("Skipping message with no body:" + JSON.stringify(response.body));
             }
         });
         batch.clear();
         callback(null, messages);
     });
-}
+};
 
-var queryMessages = function (oauth, query, callback) {
+module.exports.queryMessages = function (oauth, query, callback) {
     var response = {};
     fullSyncListMessages(oauth, query, function (err, messages) {
         if (err) {
@@ -319,7 +316,7 @@ var queryMessages = function (oauth, query, callback) {
             response.emails = [];
             return callback(null, response);
         }
-        getMessages(oauth, messages, function (err, emails) {
+        exports.getMessages(oauth, messages, function (err, emails) {
             if (err) {
                 return callback(err, null);
             }
@@ -330,7 +327,7 @@ var queryMessages = function (oauth, query, callback) {
     });
 };
 
-var syncMessages = function (oauth, historyId, callback) {
+exports.syncMessages = function (oauth, historyId, callback) {
     var response = {};
     partialSyncListMessages(oauth, historyId, function (err, messages) {
         if (err) {
@@ -340,7 +337,7 @@ var syncMessages = function (oauth, historyId, callback) {
             response.emails = [];
             return callback(null, response);
         }
-        getMessages(oauth, messages, function (err, newEmails) {
+        exports.getMessages(oauth, messages, function (err, newEmails) {
             if (err) {
                 return callback(err, null);
             }
@@ -351,15 +348,4 @@ var syncMessages = function (oauth, historyId, callback) {
     });
 
 
-};
-
-module.exports = {
-    setClientSecretsFile,
-    getNewServerAuthCode,
-    getNewAccesToken,
-    authorizeWithToken,
-    authorizeWithServerAuth,
-    queryMessages,
-    syncMessages,
-    getMessages
 };

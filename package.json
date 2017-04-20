@@ -1,6 +1,6 @@
 {
   "name": "gmail-api-sync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Sync, query and parse Gmail e-mails with Google API. Provides full and partial e-mail synchronization, as well as parsing the returned message objects into text and html. Takes care of Google Oauth 2 authentication with convenience methods.",
   "repository": {
     "type": "git",
@@ -14,10 +14,9 @@
     "_check-changes": "echo '* Checking if git directory is clean... '; bash -c '[[ -z $(git status -uno --porcelain) ]]'",
     "update-deps": "npm run _check-changes && npm run _deps-update && git commit -am 'updated deps'",
     "lint": "eslint -f unix .",
-    "inspect": "jsinspect",
-    "pretest": "npm run lint && npm run inspect && npm run nsp && npm run _deps-check",
-    "_test": "echo \"Warning: no test specified\" && exit 0",
-    "test": "echo \"Warning: no test specified; imitating clean result....\" && exit 0",
+    "pretest": "npm run lint && npm run nsp && npm run _deps-check",
+    "_test": "mocha test/test.js",
+    "test": "mocha test/test.js",
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
     "commit-and-push": "npm run _commit && npm test && npm run _push",
@@ -51,15 +50,17 @@
   "license": "MIT",
   "homepage": "https://github.com/fedecia/gmail-api-sync#readme",
   "dependencies": {
-    "googleapis": "^17.1.0",
+    "debug": "^2.6.4",
     "gmail-api-parse-message": "^2.0.0",
     "google-auth-library": "^0.10.0",
-    "google-batch": "https://github.com/fedecia/google-batch/tarball/master"
-  },"devDependencies": {
-  "eslint": "^3.19.0",
-  "jshint": "^2.9.4",
-  "jsinspect": "^0.12.4",
-  "npm-check-updates": "^2.10.5",
-  "nsp": "^2.6.3"
+    "google-batch": "https://github.com/fedecia/google-batch/tarball/master",
+    "googleapis": "^19.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "jshint": "^2.9.4",
+    "mocha": "^3.2.0",
+    "npm-check-updates": "^2.10.5",
+    "nsp": "^2.6.3"
   }
 }

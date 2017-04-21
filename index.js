@@ -5,7 +5,6 @@ var gmailApiParser = require('gmail-api-parse-message');
 var googleAuth = require('google-auth-library');
 var googleBatch = require('google-batch');
 var batch = new googleBatch();
-var googleApiBatch = googleBatch.require('googleapis');
 
 var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 var credentials = null;
@@ -257,7 +256,7 @@ var getHeader = function (headers, name) {
 
 exports.getMessages = function (oauth, options, messageIds, callback) {
     batch.setAuth(oauth);
-    var gmail = googleApiBatch.gmail({
+    var gmail = google.gmail({
         version: 'v1'
     });
     var gmailApiFormat;

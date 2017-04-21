@@ -54,7 +54,7 @@
     "gmail-api-parse-message": "https://github.com/fedecia/gmail-api-parse-message/tarball/master",
     "google-auth-library": "^0.10.0",
     "google-batch": "https://github.com/fedecia/google-batch/tarball/master",
-    "googleapis": "^19.0.0"
+    "googleapis": "https://github.com/fedecia/google-api-nodejs-client/tarball/master"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

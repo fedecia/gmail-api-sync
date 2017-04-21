@@ -1,4 +1,8 @@
 # gmail-api-sync
+
+[![npm version](https://badge.fury.io/js/gmail-api-sync.svg)](https://badge.fury.io/js/gmail-api-sync)
+[![Build Status](https://travis-ci.org/fedecia/gmail-api-sync.svg?branch=master)](https://travis-ci.org/fedecia/gmail-api-sync)
+
 Sync, query and parse Gmail e-mails with Google API.
 
 Provides full and partial e-mail synchronization, as well as parsing the returned message objects into text and html. Takes care of Google Oauth 2 authentication with convenience methods.

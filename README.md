@@ -23,7 +23,9 @@ gmailApiSync.setClientSecretsFile('./client_secret.json');
 Query all e-mails (e.g. from:facebook.com, newer_than:2d, before:2017/04/18).
 See all posible queries [Search operators you can use with Gmail](https://support.google.com/mail/answer/7190?hl=en)
 ```js
-gmailApiSync.queryMessages(oauth, "from:facebook.com", function (err, response) {
+var options = {query: 'from:facebook.com'};
+
+gmailApiSync.queryMessages(oauth, options, function (err, response) {
   if (!err) {
       console.log(JSON.stringify(response));
  //   {
@@ -48,9 +50,9 @@ Sync e-mail changes with historyId from last message retrieved.
 For more information on historyId see [Partial synchronization](https://developers.google.com/gmail/api/guides/sync)
 
 ```js
-var historyId = previousResponse.historyId;  //"historyId": "13855"
+var options = {historyId: previousResponse.historyId}; //previousResponse.historyId: "13855"
 
-gmailApiSync.syncMessages(oauth, historyId, function (err, response) {
+gmailApiSync.syncMessages(oauth, options, function (err, response) {
   if (!err) {
       console.log(JSON.stringify(response));
  //       {
@@ -85,21 +87,39 @@ gmailApiSync.authorizeWithServerAuth(serverAuthCode, function (err, oauth) {
 });
 ```
 
+### Reponse Format
+The returned e-mails can be formated in the following modes if specified in the options param:
+- **list**: Returns the most basic format including just the messageId and threadId.
+- **metadata**: Returns all the message headers but no body (textHtml or textPlain).
+- **raw**: Returns the full email message data with body content in the raw field as a base64url encoded string.
+- **full** (default): Returns a fully parsed message including all headers and decoded body (textHtml and/or textPlain).
+```js
+var options = {
+                query: 'subject:"Claim your free iPhone"',
+                format: 'metadata'
+               }
+```
+
 ### Full working example
 ```js
 var gmailApiSync = require('gmail-api-sync');
 
 gmailApiSync.setClientSecretsFile('./client_secret.json');
 
+var options = {
+                query: 'from:*.org',
+                format: 'metadata'
+              }
+
 gmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {
     if (err) {
-        console.log("Something went wrong: " + err);
+        console.log('Something went wrong: ' + err);
         return;
     }
     else {
-        gmailApiSync.queryMessages(oauth, "from:*.org", function (err, response) {
+        gmailApiSync.queryMessages(oauth, options, function (err, response) {
             if (err) {
-                console.log("Something went wrong: " + err);
+                console.log('Something went wrong: ' + err);
                 return;
             }
             console.log(JSON.stringify(response));

@@ -255,17 +255,36 @@ var getHeader = function (headers, name) {
     return header;
 };
 
-exports.getMessages = function (oauth, messageIds, callback) {
+exports.getMessages = function (oauth, options, messageIds, callback) {
     batch.setAuth(oauth);
     var gmail = googleApiBatch.gmail({
         version: 'v1'
     });
+    var gmailApiFormat;
+    switch (options.format) {
+    case 'list':
+        gmailApiFormat = 'metadata';
+        break;
+    case 'metadata':
+        gmailApiFormat = 'metadata';
+        break;
+    case 'raw':
+        gmailApiFormat = 'raw';
+        break;
+    case 'full':
+        gmailApiFormat = 'full';
+        break;
+    default:
+        gmailApiFormat = 'full';
+    }
+
     var messages = [];
     messageIds.forEach(function (messageId) {
         var params = {
             googleBatch: true,
             userId: 'me',
-            id: messageId.id
+            id: messageId.id,
+            format: gmailApiFormat
         };
         batch.add(gmail.users.messages.get(params));
     });
@@ -276,39 +295,48 @@ exports.getMessages = function (oauth, messageIds, callback) {
         }
 
         responses.forEach(function (response) {
-            if (response.body.payload != null) {
-                var subject = getHeader(response.body.payload.headers, 'Subject');
-                var from = getHeader(response.body.payload.headers, 'From');
-                var date = getHeader(response.body.payload.headers, 'Date');
-                var id = response.body.id;
+            var message = {};
+            if (response.body.error) {
+                debug('message not found');
+            }
+            else {
+                message.id = response.body.id;
+                message.historyId = response.body.historyId;
+                message.raw = response.body.raw;
 
-                var parsedMessage = gmailApiParser(response.body);
-                var textHtml = parsedMessage.textHtml;
-                var textPlain = parsedMessage.textPlain;
-                var historyId = response.body.historyId;
+                if (response.body.payload) {
+                    message.subject = getHeader(response.body.payload.headers, 'Subject');
+                    message.from = getHeader(response.body.payload.headers, 'From');
+                    message.date = getHeader(response.body.payload.headers, 'Date');
+                    var parsedMessage = gmailApiParser(response.body);
+                    message.textHtml = parsedMessage.textHtml;
+                    message.textPlain = parsedMessage.textPlain;
+                }
 
-                var message = {
-                    id: id,
-                    date: date,
-                    from: from,
-                    subject: subject,
-                    textHtml: textHtml,
-                    textPlain: textPlain,
-                    historyId: historyId
-                };
                 messages.push(message);
-            } else {
-                //debug("Skipping message with no body:" + JSON.stringify(response.body));
             }
         });
         batch.clear();
+//        debug(JSON.stringify(messages));
         callback(null, messages);
     });
 };
 
-module.exports.queryMessages = function (oauth, query, callback) {
+function getHistoryId(oauth, message, callback) {
+    exports.getMessages(oauth, {format: 'list'}, [message], function (err, parsedMessages) {
+        if (err) {
+            return callback(err, null);
+        }
+        
+        var historyId = parsedMessages[0].historyId;
+        return callback(null, historyId);
+    });
+
+}
+
+exports.queryMessages = function (oauth, options, callback) {
     var response = {};
-    fullSyncListMessages(oauth, query, function (err, messages) {
+    fullSyncListMessages(oauth, options.query, function (err, messages) {
         if (err) {
             return callback(err, null);
         }
@@ -316,20 +344,33 @@ module.exports.queryMessages = function (oauth, query, callback) {
             response.emails = [];
             return callback(null, response);
         }
-        exports.getMessages(oauth, messages, function (err, emails) {
-            if (err) {
-                return callback(err, null);
-            }
-            response.emails = emails;
-            response.historyId = emails[0].historyId;
-            callback(null, response);
-        });
+
+        if (options.format === 'list') {
+            response.emails = messages;
+            getHistoryId(oauth, messages[0], function (err, historyId) {
+                if (err) {
+                    return callback(err, null);
+                }
+                response.historyId = historyId;
+                return callback(null, response);
+            });
+        }
+        else {
+            exports.getMessages(oauth, options, messages, function (err, emails) {
+                if (err) {
+                    return callback(err, null);
+                }
+                response.emails = emails;
+                response.historyId = emails[0].historyId;
+                callback(null, response);
+            });
+        }
     });
 };
 
-exports.syncMessages = function (oauth, historyId, callback) {
+exports.syncMessages = function (oauth, options, callback) {
     var response = {};
-    partialSyncListMessages(oauth, historyId, function (err, messages) {
+    partialSyncListMessages(oauth, options.historyId, function (err, messages) {
         if (err) {
             return callback(err, null);
         }
@@ -337,7 +378,18 @@ exports.syncMessages = function (oauth, historyId, callback) {
             response.emails = [];
             return callback(null, response);
         }
-        exports.getMessages(oauth, messages, function (err, newEmails) {
+        if (options.format === 'list') {
+            response.emails = messages;
+            getHistoryId(oauth, messages[messages.length - 1], function (err, historyId) {
+                if (err) {
+                    return callback(err, null);
+                }
+                response.historyId = historyId;
+                return callback(null, response);
+            });
+
+        }
+        exports.getMessages(oauth, options, messages, function (err, newEmails) {
             if (err) {
                 return callback(err, null);
             }

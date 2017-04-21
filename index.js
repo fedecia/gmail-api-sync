@@ -5,6 +5,7 @@ var gmailApiParser = require('gmail-api-parse-message');
 var googleAuth = require('google-auth-library');
 var googleBatch = require('google-batch');
 var batch = new googleBatch();
+var sortBy = require('sort-by');
 
 var SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 var credentials = null;
@@ -302,7 +303,7 @@ exports.getMessages = function (oauth, options, messageIds, callback) {
                 message.id = response.body.id;
                 message.historyId = response.body.historyId;
                 message.raw = response.body.raw;
-
+        //        debug(message.historyId);
                 if (response.body.payload) {
                     message.subject = getHeader(response.body.payload.headers, 'Subject');
                     message.from = getHeader(response.body.payload.headers, 'From');
@@ -333,6 +334,13 @@ function getHistoryId(oauth, message, callback) {
 
 }
 
+function getLastEmail(emails){
+    var lastEmail = emails.sort(sortBy('-id'))[0];
+    debug('last email: ' +JSON.stringify(lastEmail));
+    return lastEmail;
+
+}
+
 exports.queryMessages = function (oauth, options, callback) {
     var response = {};
     fullSyncListMessages(oauth, options.query, function (err, messages) {
@@ -346,7 +354,7 @@ exports.queryMessages = function (oauth, options, callback) {
 
         if (options.format === 'list') {
             response.emails = messages;
-            getHistoryId(oauth, messages[0], function (err, historyId) {
+            getHistoryId(oauth, getLastEmail(messages), function (err, historyId) {
                 if (err) {
                     return callback(err, null);
                 }
@@ -360,7 +368,7 @@ exports.queryMessages = function (oauth, options, callback) {
                     return callback(err, null);
                 }
                 response.emails = emails;
-                response.historyId = emails[0].historyId;
+                response.historyId = getLastEmail(emails).historyId;
                 callback(null, response);
             });
         }

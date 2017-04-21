@@ -55,7 +55,8 @@
     "google-auth-library": "^0.10.0",
     "google-batch": "https://github.com/fedecia/google-batch/tarball/master",
     "googleapis": "https://github.com/fedecia/google-api-nodejs-client/tarball/master",
-    "request": "^2.55.0"
+    "request": "^2.55.0",
+    "sort-by": "^1.2.0"
   },
   "devDependencies": {
     "eslint": "^3.19.0",

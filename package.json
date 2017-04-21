@@ -17,6 +17,8 @@
     "pretest": "npm run lint && npm run nsp && npm run _deps-check",
     "_test": "mocha test/test.js",
     "test": "mocha test/test.js",
+    "cover": "istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "_commit": "git commit -am \"commit by 'npm run commit'\"",
     "_push": "git push --follow-tags",
     "commit-and-push": "npm run _commit && npm test && npm run _push",
@@ -59,9 +61,12 @@
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
+    "coveralls": "^2.13.0",
     "eslint": "^3.19.0",
+    "istanbul": "^0.4.5",
     "jshint": "^2.9.4",
     "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "^1.3.0",
     "npm-check-updates": "^2.10.5",
     "nsp": "^2.6.3"
   }

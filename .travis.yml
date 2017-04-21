@@ -5,3 +5,5 @@ node_js:
   - "7"
 script:
   - npm test
+after_success:
+  - npm run coveralls

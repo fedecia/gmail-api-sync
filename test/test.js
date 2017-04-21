@@ -68,14 +68,87 @@ describe('FullSync', function () {
 
         });
     });
-    describe('#queryMessages("subject:mocha-tests-are-fun-not!")', function () {
-        it('should return 1 message subject "mocha-tests-are-fun-not!"', function (done) {
-            var options = {query: 'subject:mocha-tests-are-fun-not!',
-            format : 'list'};
+    describe('#queryMessages("subject:mocha-tests-are-fun-not!,format:list")', function () {
+        it('should return 1 message for subject "mocha-tests-are-fun-not!"', function (done) {
+            var options = {
+                query: 'subject:mocha-tests-are-fun-not!',
+                format: 'list'
+            };
             fullSyncTest(options, function (err, response) {
                 if (err) done(err);
                 else {
                     assert.equal(1, response.emails.length);
+                    assert.equal('15b8cdae6ecf4714', response.emails[0].id);
+                    done();
+                }
+            });
+
+        });
+    });
+    describe('#queryMessages("subject:mocha-tests-are-fun-not!,format:raw")', function () {
+        it('should return 1 message with the raw', function (done) {
+            var options = {
+                query: 'subject:mocha-tests-are-fun-not!',
+                format: 'raw'
+            };
+            fullSyncTest(options, function (err, response) {
+                if (err) done(err);
+                else {
+                    assert.equal(1, response.emails.length);
+                    assert.notEqual(response.emails[0].raw, null);
+                    done();
+                }
+            });
+
+        });
+    });
+    describe('#queryMessages("subject:mocha-tests-are-fun-not!,format:metadata")', function () {
+        it('should return 1 message with the right metadata', function (done) {
+            var options = {
+                query: 'subject:mocha-tests-are-fun-not!',
+                format: 'metadata'
+            };
+            fullSyncTest(options, function (err, response) {
+                if (err) done(err);
+                else {
+                    assert.equal('mocha-tests-are-fun-not!', response.emails[0].subject);
+                    assert.equal('Test Testing <bestgrouptest@gmail.com>', response.emails[0].from);
+                    assert.equal('15b8cdae6ecf4714', response.emails[0].id);
+                    done();
+                }
+            });
+
+        });
+    });
+    describe('#queryMessages("subject:mocha-tests-are-fun-not!,format:full")', function () {
+        it('should return 1 parsed message for subject "mocha-tests-are-fun-not!"', function (done) {
+            var options = {
+                query: 'subject:mocha-tests-are-fun-not!',
+                format: 'full'
+            };
+            fullSyncTest(options, function (err, response) {
+                if (err) done(err);
+                else {
+                    assert.equal(1, response.emails.length);
+                    assert.equal('15b8cdae6ecf4714', response.emails[0].id);
+                    assert.equal('<div dir=\"ltr\"><br></div>', response.emails[0].textHtml);
+                    assert.equal('\r\n', response.emails[0].textPlain);
+                    done();
+                }
+            });
+
+        });
+    });
+    describe('#queryMessages("subject:mocha-tests-are-fun-not!")', function () {
+        it('should return 1 parsed message with format = null', function (done) {
+            var options = {query: 'subject:mocha-tests-are-fun-not!'};
+            fullSyncTest(options, function (err, response) {
+                if (err) done(err);
+                else {
+                    assert.equal(1, response.emails.length);
+                    assert.equal('15b8cdae6ecf4714', response.emails[0].id);
+                    assert.equal('<div dir=\"ltr\"><br></div>', response.emails[0].textHtml);
+                    assert.equal('\r\n', response.emails[0].textPlain);
                     done();
                 }
             });

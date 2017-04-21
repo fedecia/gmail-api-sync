@@ -1,6 +1,6 @@
 {
   "name": "gmail-api-sync",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Sync, query and parse Gmail e-mails with Google API. Provides full and partial e-mail synchronization, as well as parsing the returned message objects into text and html. Takes care of Google Oauth 2 authentication with convenience methods.",
   "repository": {
     "type": "git",
@@ -51,7 +51,7 @@
   "homepage": "https://github.com/fedecia/gmail-api-sync#readme",
   "dependencies": {
     "debug": "^2.6.4",
-    "gmail-api-parse-message": "^2.0.0",
+    "gmail-api-parse-message": "https://github.com/fedecia/gmail-api-parse-message/tarball/master",
     "google-auth-library": "^0.10.0",
     "google-batch": "https://github.com/fedecia/google-batch/tarball/master",
     "googleapis": "^19.0.0"

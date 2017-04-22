@@ -57,7 +57,11 @@ function createOauth2Client() {
  * execute the given callback with the authorized OAuth2 client.
  *
  */
-exports.getNewServerAuthCode = function () {
+exports.getNewServerAuthCode = function (newScopes,callback) {
+    var scopes = SCOPES;
+    if (newScopes) {
+        scopes = newScopes;
+    }
     checkCredentials(function (err) {
         if (err) {
             debug('Unable to load credentials. Is Client secret set?');
@@ -66,9 +70,10 @@ exports.getNewServerAuthCode = function () {
         var oauth2Client = createOauth2Client();
         var authUrl = oauth2Client.generateAuthUrl({
             access_type: 'offline',
-            scope: SCOPES
+            scope: scopes
         });
         debug('Authorize this app by visiting this url: ', authUrl);
+        callback('Authorize this app by visiting this url: ' + authUrl);
 
     });
 };
@@ -307,6 +312,7 @@ exports.getMessages = function (oauth, options, messageIds, callback) {
                 if (response.body.payload) {
                     message.subject = getHeader(response.body.payload.headers, 'Subject');
                     message.from = getHeader(response.body.payload.headers, 'From');
+                    message.to = getHeader(response.body.payload.headers, 'To');
                     message.date = getHeader(response.body.payload.headers, 'Date');
                     var parsedMessage = gmailApiParser(response.body);
                     message.textHtml = parsedMessage.textHtml;

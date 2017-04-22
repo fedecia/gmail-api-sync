@@ -91,7 +91,7 @@ gmailApiSync.authorizeWithServerAuth(serverAuthCode, function (err, oauth) {
 
 });
 ```
-#Terminal output
+#### Terminal output
 ```sh
 ~/personal/gmail-api-sync/test$ node generate_server_auth.js 
 Authorize this app by visiting this url: https://accounts.google.com/o/oauth2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.compose&response_type=code&client_id=1081826302113-deknk5sgd6n2vutgv3l4ub4530qqc8kh.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob

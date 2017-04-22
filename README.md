@@ -2,6 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/gmail-api-sync.svg)](https://badge.fury.io/js/gmail-api-sync)
 [![Build Status](https://travis-ci.org/fedecia/gmail-api-sync.svg?branch=master)](https://travis-ci.org/fedecia/gmail-api-sync)
+[![Coverage Status](https://coveralls.io/repos/github/fedecia/gmail-api-sync/badge.svg?branch=master)](https://coveralls.io/github/fedecia/gmail-api-sync?branch=master)
 
 Sync, query and parse Gmail e-mails with Google API.
 

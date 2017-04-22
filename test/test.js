@@ -1,6 +1,6 @@
 var gmailApiSync = require('../index.js');
 var assert = require('assert');
-var mailsender = require('./mailsender.js');
+var mailsender = require('gmail-sender-oauth');
 
 //Load Google Api Project client secret.
 var CLIENT_SECRET_PATH = 'test/client_secret.json';

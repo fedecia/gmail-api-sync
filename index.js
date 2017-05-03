@@ -17,7 +17,7 @@ exports.setClientSecretsFile = function (path) {
 exports.resetCredentials = function (callback) {
     credentials = null;
     loadClientSecrets(callback);
-}
+};
 
 // Load client secrets from a local file.
 var loadClientSecrets = function (callback) {

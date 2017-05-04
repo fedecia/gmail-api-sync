@@ -28,7 +28,7 @@ gmailApiSync.setClientSecretsFile('./client_secret.json');
 Query all e-mails (e.g. from:facebook.com, newer_than:2d, before:2017/04/18).
 See all posible queries [Search operators you can use with Gmail](https://support.google.com/mail/answer/7190?hl=en)
 ```js
-var options = {query: 'from:facebook.com'};
+var options = {query: 'from:facebook.com newer_than:2d'};
 
 gmailApiSync.queryMessages(oauth, options, function (err, response) {
   if (!err) {

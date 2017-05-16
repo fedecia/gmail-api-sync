@@ -1,6 +1,6 @@
 {
   "name": "gmail-api-sync",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Sync, query and parse Gmail e-mails with Google API. Provides full and partial e-mail synchronization, as well as parsing the returned message objects into text and html. Takes care of Google Oauth 2 authentication with convenience methods.",
   "repository": {
     "type": "git",

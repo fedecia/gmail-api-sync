@@ -33,7 +33,7 @@ var loadClientSecrets = function (callback) {
 };
 
 function checkCredentials(callback) {
-    if (credentials === null) {
+    if (!credentials) {
         loadClientSecrets(function (err) {
             if (err) {
                 debug('Error loading credentials.');
@@ -91,7 +91,7 @@ exports.getNewServerAuthCode = function (newScopes,callback) {
  * @param {function} callback The callback to call with the authorized client.
  */
 exports.authorizeWithToken = function (accessToken, callback) {
-    if (accessToken === null) {
+    if (!accessToken) {
         return callback(new Error('serverAuthCode cannot be null'), null);
     }
     checkCredentials(function (err) {

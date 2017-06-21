@@ -62,7 +62,7 @@
   },
   "devDependencies": {
     "coveralls": "^2.13.0",
-    "eslint": "^3.19.0",
+    "eslint": "^4.0.0",
     "gmail-sender-oauth": "^1.0.3",
     "istanbul": "^0.4.5",
     "jshint": "^2.9.4",

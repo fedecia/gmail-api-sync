@@ -152,7 +152,7 @@ function partialSyncListMessagesInitial(auth, historyId, callback) {
 function partialSyncListMessagesPage(auth, resp, messages, callback) {
     var newMessages = [];
     if (resp.history == null) {
-        return callback(null, messages);
+        return callback(null, messages, resp.historyId);
     }
     resp.history.forEach(function (item) {
         newMessages.push(item.messages[0]);
@@ -245,11 +245,11 @@ function partialSyncListMessages(auth, historyId, callback) {
         if (err) {
             return callback(err, null);
         }
-        partialSyncListMessagesPage(auth, resp, messages, function (err, messages) {
+        partialSyncListMessagesPage(auth, resp, messages, function (err, messages, historyId) {
             if (err) {
                 return callback(err, null);
             }
-            callback(null, messages);
+            callback(null, messages, historyId);
         });
     });
 }
@@ -387,11 +387,12 @@ exports.queryMessages = function (oauth, options, callback) {
 
 exports.syncMessages = function (oauth, options, callback) {
     var response = {};
-    partialSyncListMessages(oauth, options.historyId, function (err, messages) {
+    partialSyncListMessages(oauth, options.historyId, function (err, messages,historyId) {
         if (err) {
             return callback(err, null);
         }
         if (messages.length === 0) {
+            response.historyId = historyId;
             response.emails = [];
             return callback(null, response);
         }

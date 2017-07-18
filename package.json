@@ -1,34 +1,85 @@
 {
-  "name": "gmail-api-sync",
-  "version": "1.2.6",
+  "_args": [
+    [
+      {
+        "raw": "gmail-api-sync@^1.2.6",
+        "scope": null,
+        "escapedName": "gmail-api-sync",
+        "name": "gmail-api-sync",
+        "rawSpec": "^1.2.6",
+        "spec": ">=1.2.6 <2.0.0",
+        "type": "range"
+      },
+      "/Users/e18204/personal/ss2"
+    ]
+  ],
+  "_from": "gmail-api-sync@>=1.2.6 <2.0.0",
+  "_id": "gmail-api-sync@1.2.6",
+  "_inCache": true,
+  "_location": "/gmail-api-sync",
+  "_nodeVersion": "6.10.3",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/gmail-api-sync-1.2.6.tgz_1494911162957_0.9300013179890811"
+  },
+  "_npmUser": {
+    "name": "fedecia",
+    "email": "us.fede@gmail.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "gmail-api-sync@^1.2.6",
+    "scope": null,
+    "escapedName": "gmail-api-sync",
+    "name": "gmail-api-sync",
+    "rawSpec": "^1.2.6",
+    "spec": ">=1.2.6 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/gmail-api-sync/-/gmail-api-sync-1.2.6.tgz",
+  "_shasum": "0843fe1698d5d043500a6c0fd83c92fffa882f51",
+  "_shrinkwrap": null,
+  "_spec": "gmail-api-sync@^1.2.6",
+  "_where": "/Users/e18204/personal/ss2",
+  "author": {
+    "name": "Federico Cia",
+    "email": "us.fede@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/fedecia/gmail-api-sync/issues"
+  },
+  "dependencies": {
+    "debug": "^2.6.4",
+    "gmail-api-parse-message": "https://github.com/fedecia/gmail-api-parse-message/tarball/master",
+    "google-auth-library": "^0.10.0",
+    "google-batch": "https://github.com/fedecia/google-batch/tarball/master",
+    "googleapis": "https://github.com/fedecia/google-api-nodejs-client/tarball/master",
+    "request": "^2.55.0",
+    "sort-by": "^1.2.0"
+  },
   "description": "Sync, query and parse Gmail e-mails with Google API. Provides full and partial e-mail synchronization, as well as parsing the returned message objects into text and html. Takes care of Google Oauth 2 authentication with convenience methods.",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/fedecia/gmail-api-sync.git"
+  "devDependencies": {
+    "coveralls": "^2.13.0",
+    "eslint": "^4.2.0",
+    "gmail-sender-oauth": "^1.0.3",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.9.4",
+    "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "^1.3.0",
+    "npm-check-updates": "^2.10.5",
+    "nsp": "^2.6.3"
   },
-  "main": "./index.js",
-  "scripts": {
-    "nsp": "nsp check",
-    "_deps-check": "npm-check-updates --error-level 2",
-    "_deps-update": "echo '* Updating packages versions... '; npm-check-updates -u --upgradeAll --error-level 1 && npm install",
-    "_check-changes": "echo '* Checking if git directory is clean... '; bash -c '[[ -z $(git status -uno --porcelain) ]]'",
-    "update-deps": "npm run _check-changes && npm run _deps-update && git commit -am 'updated deps'",
-    "lint": "eslint -f unix .",
-    "pretest": "npm run lint && npm run nsp && npm run _deps-check",
-    "_test": "mocha test/test.js",
-    "test": "mocha test/test.js",
-    "cover": "istanbul cover _mocha",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
-    "_commit": "git commit -am \"commit by 'npm run commit'\"",
-    "_push": "git push --follow-tags",
-    "commit-and-push": "npm run _commit && npm test && npm run _push",
-    "_patch-release": "npm version patch && npm publish",
-    "_minor-release": "npm version minor && npm publish",
-    "_major-release": "npm version major && npm publish",
-    "patch-release": "npm test && npm run _patch-release && npm run _push",
-    "minor-release": "npm test && npm run _minor-release && npm run _push",
-    "__major-release": "npm test && npm run _major-release && npm run _push"
+  "directories": {},
+  "dist": {
+    "shasum": "0843fe1698d5d043500a6c0fd83c92fffa882f51",
+    "tarball": "https://registry.npmjs.org/gmail-api-sync/-/gmail-api-sync-1.2.6.tgz"
   },
+  "gitHead": "80aa73c3c50611313efac0548756c3943e3d2be2",
+  "homepage": "https://github.com/fedecia/gmail-api-sync#readme",
   "keywords": [
     "sync",
     "gmail",
@@ -45,30 +96,43 @@
     "history",
     "google-batch"
   ],
-  "author": {
-    "name": "Federico Cia",
-    "email": "us.fede@gmail.com"
-  },
   "license": "MIT",
-  "homepage": "https://github.com/fedecia/gmail-api-sync#readme",
-  "dependencies": {
-    "debug": "^2.6.4",
-    "gmail-api-parse-message": "https://github.com/fedecia/gmail-api-parse-message/tarball/master",
-    "google-auth-library": "^0.10.0",
-    "google-batch": "https://github.com/fedecia/google-batch/tarball/master",
-    "googleapis": "https://github.com/fedecia/google-api-nodejs-client/tarball/master",
-    "request": "^2.55.0",
-    "sort-by": "^1.2.0"
+  "main": "./index.js",
+  "maintainers": [
+    {
+      "name": "fedecia",
+      "email": "fedecia@gmail.com"
+    }
+  ],
+  "name": "gmail-api-sync",
+  "optionalDependencies": {},
+  "readme": "# gmail-api-sync\n\n[![npm version](https://badge.fury.io/js/gmail-api-sync.svg)](https://badge.fury.io/js/gmail-api-sync)\n[![Build Status](https://travis-ci.org/fedecia/gmail-api-sync.svg?branch=master)](https://travis-ci.org/fedecia/gmail-api-sync)\n[![Coverage Status](https://coveralls.io/repos/github/fedecia/gmail-api-sync/badge.svg?branch=master)](https://coveralls.io/github/fedecia/gmail-api-sync?branch=master)\n\nSync, query and parse Gmail e-mails with Google API.\n\nProvides full and partial e-mail synchronization, as well as parsing the returned message objects into text and html. Takes care of Google Oauth 2 authentication with convenience methods.\n\n## Installation\n\n```sh\n#install and save\nnpm install gmail-api-sync --save\n```\n\n## Usage\nRequire the module.\n```js\nvar gmailApiSync = require('gmail-api-sync');\n```\nLoad Google Api Project client secret. To get this file follow [Step 1](https://developers.google.com/gmail/api/quickstart/nodejs) .\n```js\ngmailApiSync.setClientSecretsFile('./client_secret.json');\n```\n### Full Synchronization (Requires Oauth2 authentication see below)\nQuery all e-mails (e.g. from:facebook.com, newer_than:2d, before:2017/04/18).\nSee all posible queries [Search operators you can use with Gmail](https://support.google.com/mail/answer/7190?hl=en)\n```js\nvar options = {query: 'from:facebook.com newer_than:2d'};\n\ngmailApiSync.queryMessages(oauth, options, function (err, response) {\n  if (!err) {\n      console.log(JSON.stringify(response));\n //   {\n //       \"emails\": [\n //           {\n //               \"id\": \"15a863bf55605f13\",\n //               \"date\": \"Tue, 28 Feb 2017 11:39:20 -0800\",\n //               \"from\": \"Facebook Analytics for Apps <analyticsforapps-noreply@facebook.com>\",\n //               \"subject\": \"New from Facebook Analytics for Apps\",\n //               \"textHtml\": \"<!DOCTYPE HTML PUBLIC \\\"-//W3C//DTD HTML 4.01 Transitional //EN\\\"><html><head><title>Facebook</title><meta http-equiv=\n //               \\\"Content-Type\\\" content=\\\"text/html; charset=utf-8\\\" /><style>@media all and (max-width: 480px){*[class].ib_t{min-width:100% !important}*[clas (...)\",\n //               \"textPlain\": \"Hi Juan,\\r\\n\\r\\nFacebook Analytics for Apps Hits 1 Million Apps, Websites, Bots and Adds New Features\\r\\n\\r\\nWe're so (...)\",\n //                \"historyId\": \"13855\"\n //             }\n //       ],\n //       \"historyId\": \"13855\"\n //   }\n});\n```\n### Partial Synchronization (Requires Oauth2 authentication see below)\nSync e-mail changes with historyId from last message retrieved.\nFor more information on historyId see [Partial synchronization](https://developers.google.com/gmail/api/guides/sync)\n\n```js\nvar options = {historyId: previousResponse.historyId}; //previousResponse.historyId: \"13855\"\n\ngmailApiSync.syncMessages(oauth, options, function (err, response) {\n  if (!err) {\n      console.log(JSON.stringify(response));\n //       {\n //           \"emails\": [ {\n //               \"id\": \"15b87edac93971d1\",\n //               \"date\": \"Wed, 19 Apr 2017 13:35:50 -0700\",\n //               \"from\": \"Facebook <notification+kjdvmpu51uu_@facebookmail.com>\",\n //               \"subject\": \"Juan, you have 67 new notifications\",\n //               \"textHtml\": \"<!DOCTYPE HTML PUBLIC \\\"-//W3C//DTD HTML 4.01 Transitional //EN\\\"><html><head><title>Facebook</title><meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=utf-8\\\" /><style>@media all and (max-width: 480px){*[class].ib_t{min-width:100% !important}*[class].ib_row{display:block !important}*\n //               \"textPlain\": \"========================================\\r\\nGo to Facebook\\r\\nhttps://www.facebook.com/n/?\n //               \"historyId\": \"15424\"\n //            }\n //           ],\n //           \"historyId\": \"15424\"\n //       }\n  }\n});\n```\n### Authentication with Access Token\nThis assumes you already have an access token from Google Api. To get one, see test [Generate Access Token](../master/test/generate_access_token.js) .\n```js\ngmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {\n\n});\n```\n\n### Authentication with ServerAuth Code\nThis assumes you already have a ServerAuth Code from Google Api. To get one, see test [Generate Server Auth code](../master/test/generate_access_token.js) .\n```js\ngmailApiSync.authorizeWithServerAuth(serverAuthCode, function (err, oauth) {\n\n});\n```\n#### Terminal output\n```sh\n~/personal/gmail-api-sync/test$ node generate_server_auth.js \nAuthorize this app by visiting this url: https://accounts.google.com/o/oauth2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fgmail.compose&response_type=code&client_id=1081826302113-deknk5sgd6n2vutgv3l4ub4530qqc8kh.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob\nIf you need a accessToken to be generated as well, run: \nnode generate_access_token <SERVER_AUTH_CODE>, with the code you received from the visited URL.\n\n~/personal/gmail-api-sync/test$ node generate_access_token.js 4/AR34xAC0Z437ItI_27FmpDYmCeNMpMWNyZk0G6cV6EQ\ntoken: {\"access_token\":\"ya29.Gls0BCt9gHK7Bmn5mPQFff6JCaVyt8ZcRiUgLPQL4SmAFk-msJOTIaISi-UiPhRD7QHR2n_8dJXymn08helwDCcnHpGK14sqHXhsH3fgTlvaNz1dZbA7P6LJO4BH\",\"refresh_token\":\"1/kVLTLeR7vb1e6tuT6XHWBqZ0nG-qwldfeO1uhwdwBok\",\"token_type\":\"Bearer\",\"expiry_date\":1492885695675}\n```\n\n### Reponse Format\nThe returned e-mails can be formated in the following modes if specified in the options param:\n- **list**: Returns the most basic format including just the messageId and threadId.\n- **metadata**: Returns all the message headers but no body (textHtml or textPlain).\n- **raw**: Returns the full email message data with body content in the raw field as a base64url encoded string.\n- **full** (default): Returns a fully parsed message including all headers and decoded body (textHtml and/or textPlain).\n```js\nvar options = {\n                query: 'subject:\"Claim your free iPhone\"',\n                format: 'metadata'\n               }\n```\n\n### Full working example\n```js\nvar gmailApiSync = require('gmail-api-sync');\n\ngmailApiSync.setClientSecretsFile('./client_secret.json');\n\nvar options = {\n                query: 'from:*.org',\n                format: 'metadata'\n              }\n\ngmailApiSync.authorizeWithToken(accessToken, function (err, oauth) {\n    if (err) {\n        console.log('Something went wrong: ' + err);\n        return;\n    }\n    else {\n        gmailApiSync.queryMessages(oauth, options, function (err, response) {\n            if (err) {\n                console.log('Something went wrong: ' + err);\n                return;\n            }\n            console.log(JSON.stringify(response));\n        });\n    }\n});\n```\n\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fedecia/gmail-api-sync.git"
   },
-  "devDependencies": {
-    "coveralls": "^2.13.0",
-    "eslint": "^4.0.0",
-    "gmail-sender-oauth": "^1.0.3",
-    "istanbul": "^0.4.5",
-    "jshint": "^2.9.4",
-    "mocha": "^3.2.0",
-    "mocha-lcov-reporter": "^1.3.0",
-    "npm-check-updates": "^2.10.5",
-    "nsp": "^2.6.3"
-  }
+  "scripts": {
+    "__major-release": "npm test && npm run _major-release && npm run _push",
+    "_check-changes": "echo '* Checking if git directory is clean... '; bash -c '[[ -z $(git status -uno --porcelain) ]]'",
+    "_commit": "git commit -am \"commit by 'npm run commit'\"",
+    "_deps-check": "npm-check-updates --error-level 2",
+    "_deps-update": "echo '* Updating packages versions... '; npm-check-updates -u --upgradeAll --error-level 1 && npm install",
+    "_major-release": "npm version major && npm publish",
+    "_minor-release": "npm version minor && npm publish",
+    "_patch-release": "npm version patch && npm publish",
+    "_push": "git push --follow-tags",
+    "_test": "mocha test/test.js",
+    "commit-and-push": "npm run _commit && npm test && npm run _push",
+    "cover": "istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "lint": "eslint -f unix .",
+    "minor-release": "npm test && npm run _minor-release && npm run _push",
+    "nsp": "nsp check",
+    "patch-release": "npm test && npm run _patch-release && npm run _push",
+    "pretest": "npm run lint && npm run nsp && npm run _deps-check",
+    "test": "mocha test/test.js",
+    "update-deps": "npm run _check-changes && npm run _deps-update && git commit -am 'updated deps'"
+  },
+  "version": "1.2.6"
 }

@@ -412,7 +412,11 @@ exports.syncMessages = function (oauth, options, callback) {
                 return callback(err, null);
             }
             response.emails = newEmails;
-            response.historyId = newEmails[newEmails.length - 1].historyId;
+            if (newEmails[newEmails.length - 1])
+                response.historyId = newEmails[newEmails.length - 1].historyId;
+            else {
+                response.historyId = historyId;
+            }
             callback(null, response);
         });
     });

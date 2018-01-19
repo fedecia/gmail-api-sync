@@ -133,6 +133,19 @@ exports.authorizeWithServerAuth = function (serverAuthCode, callback) {
     });
 };
 
+function getCurrentHistoryId(auth, callback){
+    var gmail = google.gmail('v1');
+    gmail.users.getProfile({
+        auth: auth,
+        userId: 'me'
+    }, function (err, response) {
+        if (response) {
+            return callback(response.historyId);
+        } else
+            return callback(null);
+    });
+}
+
 function partialSyncListMessagesInitial(auth, historyId, callback) {
     var gmail = google.gmail('v1');
     gmail.users.history.list({
@@ -142,7 +155,14 @@ function partialSyncListMessagesInitial(auth, historyId, callback) {
         historyTypes: 'messageAdded'
     }, function (err, response) {
         if (err) {
-            return callback(new Error('partialSyncListMessagesInitial: The API returned an error: ' + err), null);
+            if (err.code == 404){
+                getCurrentHistoryId(auth, function (currentHistoryId) {
+                    response = {messages : [], historyId : currentHistoryId};
+                    new Error('partialSyncListMessagesInitial: Gmail message not found for historyId: '+ historyId);
+                    return callback(null, response);
+                });
+            } else
+                return callback(new Error('partialSyncListMessagesInitial: Gmail API returned an error: ' + err), null);
         }
         else {
             return callback(null, response);
@@ -312,7 +332,7 @@ exports.getMessages = function (oauth, options, messageIds, callback) {
                 message.id = response.body.id;
                 message.historyId = response.body.historyId;
                 message.raw = response.body.raw;
-        //        debug(message.historyId);
+                //        debug(message.historyId);
                 if (response.body.payload) {
                     message.subject = getHeader(response.body.payload.headers, 'Subject');
                     message.from = getHeader(response.body.payload.headers, 'From');
@@ -327,7 +347,7 @@ exports.getMessages = function (oauth, options, messageIds, callback) {
             }
         });
         batch.clear();
-//        debug(JSON.stringify(messages));
+        //        debug(JSON.stringify(messages));
         callback(null, messages);
     });
 };

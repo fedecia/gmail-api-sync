@@ -134,5 +134,5 @@
     "test": "mocha test/test.js",
     "update-deps": "npm run _check-changes && npm run _deps-update && git commit -am 'updated deps'"
   },
-  "version": "1.2.8"
+  "version": "1.2.9"
 }

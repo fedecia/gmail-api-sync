@@ -53,25 +53,25 @@
     "url": "https://github.com/fedecia/gmail-api-sync/issues"
   },
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.1.1",
     "gmail-api-parse-message": "https://github.com/fedecia/gmail-api-parse-message/tarball/master",
     "google-auth-library": "0.10.0",
     "google-batch": "https://github.com/fedecia/google-batch/tarball/master",
     "googleapis": "https://github.com/fedecia/google-api-nodejs-client/tarball/master",
-    "request": "^2.55.0",
+    "request": "^2.88.0",
     "sort-by": "^1.2.0"
   },
   "description": "Sync, query and parse Gmail e-mails with Google API. Provides full and partial e-mail synchronization, as well as parsing the returned message objects into text and html. Takes care of Google Oauth 2 authentication with convenience methods.",
   "devDependencies": {
-    "coveralls": "^3.0.0",
-    "eslint": "^4.2.0",
-    "gmail-sender-oauth": "^1.0.3",
+    "coveralls": "^3.0.6",
+    "eslint": "^6.1.0",
+    "gmail-sender-oauth": "^1.0.5",
     "istanbul": "^0.4.5",
-    "jshint": "^2.9.4",
-    "mocha": "^5.0.0",
+    "jshint": "^2.10.2",
+    "mocha": "^6.2.0",
     "mocha-lcov-reporter": "^1.3.0",
-    "npm-check-updates": "^2.10.5",
-    "nsp": "^3.1.0"
+    "npm-check-updates": "^3.1.20",
+    "nsp": "^3.2.1"
   },
   "directories": {},
   "dist": {
@@ -128,9 +128,8 @@
     "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "lint": "eslint -f unix .",
     "minor-release": "npm test && npm run _minor-release && npm run _push",
-    "nsp": "nsp check",
     "patch-release": "npm test && npm run _patch-release && npm run _push",
-    "pretest": "npm run lint && npm run nsp && npm run _deps-check",
+    "pretest": "npm run lint && npm run _deps-check",
     "test": "mocha test/test.js",
     "update-deps": "npm run _check-changes && npm run _deps-update && git commit -am 'updated deps'"
   },

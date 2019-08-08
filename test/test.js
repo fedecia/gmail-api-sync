@@ -8,11 +8,12 @@ gmailApiSync.setClientSecretsFile(CLIENT_SECRET_PATH);
 
 //Using AccessToken;
 var accessToken = {
-    "access_token": "ya29.GlsyBDLbRnMV1NsaaQFRNJfOUjog-XC6IX9gReZFsrFrPPpdNYB6742P5CuIOuCBvN45i78mGreZ4Ktmn74VphwHpvQxxEPTfxjvPAbzSiyF0J1afGVvf2WXURnE",
-    "refresh_token": "1/KXVGK6m2k_pNPTSffBHKzWR1TGkPEnEEeGgCNF6BwmH6LhIy0SBXv1atXJ5d31cJ",
-    "token_type": "Bearer",
-    "expiry_date": 1492639284694
-};
+    "access_token":"ya29.GltfB9pbQU0VQUO5QnQBhX7cKI5l9v_T8dV7xT8bQojpQulMdxS1Xjx8N5Ocunpu7BrNU4iB2al38w5345HSf-89LZ6Rjb8ZeczZqr6tJq7xYoRAY9dYK_cR6FmJ",
+    "refresh_token":"1/ofJIai361jF2kDPfA6EIrLFjMQU14loUTh_gokDa8xo",
+    "scope":"https://www.googleapis.com/auth/gmail.readonly",
+    "token_type":"Bearer",
+    "expiry_date":1565303562958
+}
 
 //Full Sync
 function fullSyncTest(options, callback) {
@@ -57,11 +58,11 @@ function partialSync(options, callback) {
 }
 
 function sendMail(data,callback){
-    var tokenSendScope = {"access_token":"ya29.Gls0BCfU20MWEoAolHto3qIhrYqBY55SDyxK_vrJBk82IwF6WGnYO6bOaj1sAdFe8KS7z_ZBRCo_m6WBbdqHbiyfOSWIo6-0TAAp_0uWW2bsPKkAzj5SbPXZMqvb","refresh_token":"1/iling5bFt8tLRurm2vuf4U2pj5Q7AvdBdLt6Dlod2BY","token_type":"Bearer","expiry_date":1492826551018};
+    var tokenSendScope = accessToken;
     mailsender.setClientSecretsFile(CLIENT_SECRET_PATH);
     mailsender.send(tokenSendScope,data,callback);
 }
-
+const emailId = '16c732b92c4d8ca2';
 describe('FullSync', function () {
     describe('#queryMessages("from:*.mil")', function () {
         it('should return no messages for .mil domain', function (done) {
@@ -86,7 +87,7 @@ describe('FullSync', function () {
                 if (err) return done(err);
                 else {
                     assert.equal(1, response.emails.length);
-                    assert.equal('15b8cdae6ecf4714', response.emails[0].id);
+                    assert.equal(emailId, response.emails[0].id);
                     return done();
                 }
             });
@@ -120,7 +121,7 @@ describe('FullSync', function () {
                 if (err) return done(err);
                 else {
                     assert.equal(response.emails[0].subject,'mocha-tests-are-fun-not!');
-                    assert.equal(response.emails[0].id,'15b8cdae6ecf4714');
+                    assert.equal(response.emails[0].id,emailId);
                     return done();
                 }
             });
@@ -137,8 +138,8 @@ describe('FullSync', function () {
                 if (err) return done(err);
                 else {
                     assert.equal(response.emails.length,1);
-                    assert.equal(response.emails[0].id,'15b8cdae6ecf4714');
-                    assert.equal(response.emails[0].textHtml,'<div dir=\"ltr\"><br></div>');
+                    assert.equal(response.emails[0].id,emailId);
+                    assert.equal(response.emails[0].textHtml,'<div dir=\"ltr\"><br></div>\r\n');
                     assert.equal(response.emails[0].textPlain,'\r\n');                    done();
                 }
             });
@@ -152,8 +153,8 @@ describe('FullSync', function () {
                 if (err) return done(err);
                 else {
                     assert.equal(response.emails.length,1);
-                    assert.equal(response.emails[0].id,'15b8cdae6ecf4714');
-                    assert.equal(response.emails[0].textHtml,'<div dir=\"ltr\"><br></div>');
+                    assert.equal(response.emails[0].id,emailId);
+                    assert.equal(response.emails[0].textHtml,'<div dir=\"ltr\"><br></div>\r\n');
                     assert.equal(response.emails[0].textPlain,'\r\n');
                     return done();
                 }
@@ -193,7 +194,7 @@ describe('PartialSync', function () {
 
         });
 
-        it('should return just the newly sent email', function (done) {
+        it.skip('should return just the newly sent email', function (done) {
             var firstOptions = {
                 query: '',
                 format: 'list'
